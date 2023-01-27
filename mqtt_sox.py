@@ -51,19 +51,14 @@ class PublishModule:
             "transducers": copy_node.getTransducers(),
             "descrption": copy_node.getDescription()
         })
-        # print(msg)
         self.__publishExecution(copy_node.getNodeName(), msg, 2)
 
     def publish(self, node, qos=0):
-        print(node.getNodeName())
-        print(node.getTransducers())
         self.__publishExecution(node.getNodeName(), json.dumps(node.getTransducers()), qos)
 
     def __publishExecution(self, topic, msg="", qos=0):
         try:
             self.__client.loop_start()
-            print(topic)
-            print(msg)
             result = self.__client.publish(topic, msg, qos, True)
             status = result[0]
             if status == 0:
