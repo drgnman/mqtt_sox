@@ -57,8 +57,8 @@ class PublishModule:
         self.__publishExecution(node.getNodeName(), json.dumps(node.getTransducers()), qos)
 
     def __publishExecution(self, topic, msg="", qos=0):
+        self.__client.loop_start()
         try:
-            self.__client.loop_start()
             result = self.__client.publish(topic, msg, qos, True)
             status = result[0]
             if status == 0:
