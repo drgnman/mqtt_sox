@@ -70,22 +70,23 @@ class PublishModule:
 
 class SubscribeModule:
     def __init__(self, client):
-        self.__client = client
+        self.client = client
     
     def subscribe(self, node_name, qos=0):
+        meta_node = f"{node_name}_meta"
+        self.client.subscribe(meta_node, 2)
+        self.client.subscribe(node_name, qos)
+
+    def setProcessOnMessage(self):
         def on_message(client, userdata, msg):
             print(f"Received {msg.payload} from {msg.topic} topic")
-        
-        meta_node = f"{node_name}_meta"
-        self.__client.subscribe(meta_node, 2)
-        self.__client.subscribe(node_name, qos)
-        self.__client.on_message = on_message
+        self.client.on_message = on_message
     
     def run(self):
-        self.__client.loop_forever()
+        self.client.loop_forever()
 
     def unsubscribe(self):
-        self.__client.disconnect()
+        self.client.disconnect()
 
 class Node:
     def __init__(self, node_name):
