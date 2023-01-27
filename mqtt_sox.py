@@ -1,7 +1,7 @@
 from paho.mqtt import client as mqtt_client
 from copy import copy
 import json
-
+from datetime import datetime
 
 class Connection:
     def __init__(self, broker, port, client_id, username=None, password=None):
@@ -49,7 +49,8 @@ class PublishModule:
             "node_name": copy_node.getNodeName(),
             "location": copy_node.getLocation(),
             "transducers": copy_node.getTransducers(),
-            "descrption": copy_node.getDescription()
+            "descrption": copy_node.getDescription(),
+            "create_timestamp": f"{datetime.now()}"
         })
         self.__publishExecution(copy_node.getNodeName(), msg, 2)
 
@@ -57,6 +58,7 @@ class PublishModule:
         self.__publishExecution(node.getNodeName(), json.dumps(node.getTransducers()), qos)
 
     def __publishExecution(self, topic, msg="", qos=0):
+        print(msg)
         self.__client.loop_start()
         try:
             result = self.__client.publish(topic, msg, qos, True)
@@ -95,6 +97,7 @@ class Node:
         self.__latitude = 0.0
         self.__transducers = []
         self.__description = ""
+        self.__timestamp = None
 
     def setNodeName(self, node_name):
         self.__node_name = node_name
@@ -106,6 +109,8 @@ class Node:
         self.__transducers = transducers
     def setDescription(self, description):
         self.__description = description
+    def setTimeStamp(self, timestamp):
+        self.__timestamp = timestamp
     
     def getNodeName(self):
         return self.__node_name
@@ -115,21 +120,26 @@ class Node:
         return self.__transducers
     def getDescription(self):
         return self.__description
+    def getTimestamp(self):
+        return self.__timestamp
 
     def appendTransducer(self, transducer):
         if transducer.getMetaflag():
             self.__transducers.append({
-                                    "transducer" : transducer.getTransducerName(),
-                                    "unit" : transducer.getUnit(),
-                                    "min_value" : transducer.getMinValue(),
-                                    "max_value" : transducer.getMaxValue(),
-                                    "description" : transducer.getDescription()
+                transducer.getTransducerName() : {
+                    "unit" : transducer.getUnit(),
+                    "min_value" : transducer.getMinValue(),
+                    "max_value" : transducer.getMaxValue(),
+                    "description" : transducer.getDescription()
+                }
             })
     
         else:
             self.__transducers.append({
-                "transducer" : transducer.getTransducerName(),
-                "raw_value": transducer.getRawValue() 
+                transducer.getTransducerName() : {
+                    "raw_value": transducer.getRawValue(),
+                    "publish_timestamp": f"{datetime.now()}"
+                }
             })
 
     def flushTransducers(self):
