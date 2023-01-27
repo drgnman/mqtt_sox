@@ -1,7 +1,7 @@
 from mqtt_sox import Connection, PublishModule, Node
 
-connection = Connection("emqx.co.mqtt", 1883, "test")
-# client = connection.connect()
+connection = Connection("localhost", 1883, "test")
+client = connection.connect()
 node = Node("test_node")
 node.setLocation(80.5, 123.4)
 transducer = node.Transducer("test_transducer1")
@@ -25,7 +25,7 @@ transducer.setMaxValue(40)
 transducer.setDescription("nugaaa")
 node.appendTransducer(transducer)
 
-publisher = PublishModule("hoge")
+publisher = PublishModule(client)
 publisher.create(node)
 
 node.flushTransducers()
