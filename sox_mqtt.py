@@ -4,12 +4,13 @@ import random, string
 import json
 from datetime import datetime
 
-def randomName(n):
-    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
-    return ''.join(randlst)
 
 class Connection:
-    def __init__(self, broker, port, client_id=randomName(20), username=None, password=None):
+    def __randomIdGenerate(n):
+        randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
+        return ''.join(randlst)
+
+    def __init__(self, broker, port, client_id=__randomIdGenerate(20), username=None, password=None):
         self.__broker = broker
         self.__port = port
         self.__client_id = client_id
