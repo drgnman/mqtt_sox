@@ -1,9 +1,9 @@
 from sox_mqtt import Connection, PublishModule, Node
 
 connection = Connection("localhost", 1883)
-# client = connection.connect()
+client = connection.connect()
 
-publisher = PublishModule("test")
+publisher = PublishModule(client)
 node = Node("test_node")
 node.setLocation(80.5, 123.4)
 transducer = node.Transducer("test_transducer1")
