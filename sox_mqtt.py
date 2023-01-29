@@ -102,7 +102,7 @@ class Node:
         self.__node_name = node_name
         self.__longitude = 0.0
         self.__latitude = 0.0
-        self.__transducers = []
+        self.__transducers = {}
         self.__description = ""
         self.__timestamp = None
 
@@ -132,25 +132,22 @@ class Node:
 
     def appendTransducer(self, transducer):
         if transducer.getMetaflag():
-            self.__transducers.append({
-                transducer.getTransducerName() : {
+            self.__transducers[transducer.getTransducerName()] = {
                     "unit" : transducer.getUnit(),
                     "min_value" : transducer.getMinValue(),
                     "max_value" : transducer.getMaxValue(),
                     "description" : transducer.getDescription()
                 }
-            })
+            
     
         else:
-            self.__transducers.append({
-                transducer.getTransducerName() : {
+            self.__transducers[transducer.getTransducerName()] = {
                     "raw_value": transducer.getRawValue(),
                     "publish_timestamp": f"{datetime.now()}"
                 }
-            })
 
     def flushTransducers(self):
-        self.setTransducers([])
+        self.setTransducers({})
 
     class Transducer:
         def __init__(self, transducer_name):
