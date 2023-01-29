@@ -10,7 +10,7 @@ class OriginalSubscribeModule(SubscribeModule):
             print(f"hogeeeee!!!! Received {msg.payload} from {msg.topic} topic")
         self.client.on_message = on_message
 
-connection = Connection("localhost", 1883, "subscribe_test")
+connection = Connection("localhost", 1883)
 client = connection.connect()
 node_name = "test_node2"
 

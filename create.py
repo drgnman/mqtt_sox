@@ -1,6 +1,6 @@
 from sox_mqtt import Connection, PublishModule, Node
 
-connection = Connection("localhost", 1883, "publish_test")
+connection = Connection("localhost", 1883)
 # client = connection.connect()
 
 publisher = PublishModule("test")
