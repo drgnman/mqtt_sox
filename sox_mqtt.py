@@ -1,13 +1,19 @@
 from paho.mqtt import client as mqtt_client
 from copy import copy
+import random, string
 import json
 from datetime import datetime
 
+def randomName(n):
+    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
+    return ''.join(randlst)
+
 class Connection:
-    def __init__(self, broker, port, client_id, username=None, password=None):
+    def __init__(self, broker, port, client_id=randomName(20), username=None, password=None):
         self.__broker = broker
         self.__port = port
         self.__client_id = client_id
+        print(self.__client_id)
         self.__username = username
         self.__password = password
 
