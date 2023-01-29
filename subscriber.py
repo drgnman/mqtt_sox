@@ -1,4 +1,4 @@
-from mqtt_sox import Connection, SubscribeModule
+from sox_mqtt import Connection, SubscribeModule
 
 # サブスクライブした時の処理をOverrideする方法
 class OriginalSubscribeModule(SubscribeModule):

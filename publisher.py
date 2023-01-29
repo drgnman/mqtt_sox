@@ -1,4 +1,4 @@
-from mqtt_sox import Connection, PublishModule, Node
+from sox_mqtt import Connection, PublishModule, Node
 
 connection = Connection("localhost", 1883, "publish_test")
 client = connection.connect()
