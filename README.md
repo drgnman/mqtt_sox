@@ -20,14 +20,14 @@ client = connection.connect()
 メタノードとしてそのトピックが扱う情報をretainerに登録します。
 メタノード名はpublishの宛先となるノード名_metaとして定義されます。
 
-``` Node
+``` python: create.py (Node)
 publisher = PublishModule(client) # publishモジュールを通す
 node = Node(node_name)
 node.setLocation(lat, lng)
 node.setDescription(description_contents)
 ```
 
-``` Transducer
+``` python: create.py (transducer)
 transducer = node.Transducer(transducer_name)
 transducer.setUnit(unit)
 transducer.setMinValue(int(min_value))
@@ -37,14 +37,15 @@ node.appendTransducer(transducer)
 ```
 
 ノードに情報を設定した後にcreateメソッドで作成する
-```
+``` python
 publisher.create(node)
 ```
 
 
 ## Publish
 パブリッシャはNodeオブジェクトにデータをセットした上で、publishメソッドを用いてデータを配信します
-```
+
+``` python:publisher.py
 publisher = PublishModule(client)
 node = Node(node_name)
 transducer = node.Transducer(transducer_name)
@@ -52,7 +53,7 @@ transducer.setRawValue(value) # 値を設定する
 node.appendTransducer(transducer)
 ```
 
-```
+``` python:publisher.py
 publisher.publish(node)
 ```
 
@@ -60,7 +61,7 @@ publisher.publish(node)
 サブスクライバはsubscribeメソッドでnode_nameを指定してサブスクライブ登録をする
 SubscribeModuleを継承したオリジナルクラスを定義し、setProcessOnMessageメソッドでデータ受信時の処理を定義する。
 
-```
+``` python:subscriber.py
 # サブスクライブした時の処理をOverrideする方法
 class OriginalSubscribeModule(SubscribeModule):
     def __init__(self, client):
@@ -72,7 +73,7 @@ class OriginalSubscribeModule(SubscribeModule):
         self.client.on_message = on_message
 ```
 
-```
+``` python:subscriber.py
 subscriber = OriginalSubscribeModule(client) # 独自クラスを作った場合
 subscriber.subscribe(node_name)   # subscribeするノードを指定する
 subscriber.setProcessOnMessage()  # データ受信時の処理を設定
