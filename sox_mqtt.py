@@ -5,8 +5,9 @@ import json
 from datetime import datetime
 
 
+'''  Publish/Subscribeで共通のConnectionオブジェクトを生成する '''
 class Connection:
-    def __randomIdGenerate(n):
+    def __randomIdGenerate(n): # IDは英数字含みでランダム生成
         randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
         return ''.join(randlst)
 
@@ -18,6 +19,7 @@ class Connection:
         self.__username = username
         self.__password = password
 
+    # connect処理によってmqtt_clientオブジェクトを生成
     def connect(self) -> mqtt_client:
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
@@ -31,6 +33,7 @@ class Connection:
                 Please Enter Broker and Port!\n")
             return
         
+        # usernameかpasswordが設定されていた場合、両方とも必ず設定すること
         if self.__username != None or self.__password != None:
             if self.__username == None or self.__password == None:
                 print("Username or Password is not found!\n \
@@ -44,11 +47,11 @@ class Connection:
     def disconnect(self, client):
         client.disconnection()
     
+''' publisherに関する処理系統をもつモジュール'''
 class PublishModule:
     def __init__(self, client):
         self.__client = client
     
-    # transducerをどう設計するか
     def create(self, node):
         copy_node = copy(node)
         copy_node.setNodeName(f"{copy_node.getNodeName()}_meta")
@@ -77,15 +80,18 @@ class PublishModule:
         finally:
             self.__client.loop_stop()
 
+''' Subscriberに関する処理系統を持つモジュール '''
 class SubscribeModule:
     def __init__(self, client):
         self.client = client
     
     def subscribe(self, node_name, qos=0):
         meta_node = f"{node_name}_meta"
-        self.client.subscribe(meta_node, 2)
-        self.client.subscribe(node_name, qos)
+        self.client.subscribe(meta_node, 2)    # メタノードをサブスクライブ
+        self.client.subscribe(node_name, qos)  # データが流れてrくるノードをサブスクライブ
 
+    ''' Dataを受信したときのコールバック処理を管理するメソッド 
+        Overrideして受信時の処理を実装してもらう '''
     def setProcessOnMessage(self):
         def on_message(client, userdata, msg):
             print(f"Received {msg.payload} from {msg.topic} topic")
@@ -94,8 +100,9 @@ class SubscribeModule:
     def run(self):
         self.client.loop_forever()
 
-    def unsubscribe(self):
-        self.client.disconnect()
+    
+    def unsubscribe(self):         # 現状動かないもの
+        self.client.disconnect()   # disconnectのcallback関数の定義が必要
 
 class Node:
     def __init__(self, node_name):
@@ -108,7 +115,6 @@ class Node:
 
     def setNodeName(self, node_name):
         self.__node_name = node_name
-
     def setLocation(self, longitude, latitude):
         self.__longitude = longitude
         self.__latitude = latitude
@@ -138,8 +144,6 @@ class Node:
                     "max_value" : transducer.getMaxValue(),
                     "description" : transducer.getDescription()
                 }
-            
-    
         else:
             self.__transducers[transducer.getTransducerName()] = {
                     "raw_value": transducer.getRawValue(),
