@@ -20,14 +20,14 @@ client = connection.connect()
 メタノードとしてそのトピックが扱う情報をretainerに登録します。
 メタノード名はpublishの宛先となるノード名_metaとして定義されます。
 
-``` python: create.py (Node)
+```python:create.py
 publisher = PublishModule(client) # publishモジュールを通す
 node = Node(node_name)
 node.setLocation(lat, lng)
 node.setDescription(description_contents)
 ```
 
-``` python: create.py (transducer)
+``` python:create.py
 transducer = node.Transducer(transducer_name)
 transducer.setUnit(unit)
 transducer.setMinValue(int(min_value))
