@@ -4,8 +4,9 @@ git cloneして使ってください
 ```
 pip install -r requirements.txt
 ```
-
 sox_mqtt.pyをimportすることでmqttのpublishとsubscribeを支援します。
+
+# MQTT Brokerの設定
 
 ## Connection
 Connectionオブジェクトを用いて接続するブローカへの設定を行う
