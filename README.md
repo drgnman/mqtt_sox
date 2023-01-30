@@ -73,9 +73,12 @@ class OriginalSubscribeModule(SubscribeModule):
         self.client.on_message = on_message
 ```
 
+subscribe時にはqosを`0`,`1`,`2`から設定可能
+デフォルト値は`0`
+
 ``` python:subscriber.py
 subscriber = OriginalSubscribeModule(client) # 独自クラスを作った場合
-subscriber.subscribe(node_name)   # subscribeするノードを指定する
+subscriber.subscribe(node_name, qos=0)   # subscribeするノードを指定する
 subscriber.setProcessOnMessage()  # データ受信時の処理を設定
 subscriber.run()                  # サブスクライブ開始
 ```
