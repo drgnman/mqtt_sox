@@ -19,10 +19,10 @@ sox_mqtt.pyをimportすることでmqttのpublishとsubscribeを支援します�
 - 他のパラメータは用途に応じて調整してください
 
 ## Connection
-Connectionオブジェクトを用いて接続するブローカへの設定を行う
-connectメソッドによって設定した接続情報の入力確認を行い、接続に成功するとmqtt_clientを戻り値で返す
-client_idが複数クライアントで重複すると重複している者同士でコネクションを奪い合ってしまい、変な挙動を起こします(EMQXで確認)
-引数で指定しなかった場合、内部的に20桁の英数字の文字列をランダムで生成して設定するようにしている(__randomIdGenerateメソッド参照)のでほぼ重複はないはずです。
+- Connectionオブジェクトを用いて接続するブローカへの設定を行う
+- connectメソッドによって設定した接続情報の入力確認を行い、接続に成功するとmqtt_clientを戻り値で返す
+- client_idが複数クライアントで重複すると重複している者同士でコネクションを奪い合ってしまい、変な挙動を起こします(EMQXで確認)
+    - 引数で指定しなかった場合、内部的に20桁の英数字の文字列をランダムで生成して設定するようにしている(__randomIdGenerateメソッド参照)のでほぼ重複はないはずです。
 ```
 connection = Connection(broker_name, port, client_id=randomId, username=None, password=None)
 client = connection.connect()
@@ -30,8 +30,8 @@ client = connection.connect()
 
 
 ## Create
-メタノードとしてそのトピックが扱う情報をretainerに登録します。
-メタノード名はpublishの宛先となるノード名_metaとして定義されます。
+- メタノードとしてそのトピックが扱う情報をretainerに登録します。
+- メタノード名はpublishの宛先となるノード名_metaとして定義されます。
 
 ```python:create.py
 publisher = PublishModule(client) # publishモジュールを通す
@@ -49,14 +49,14 @@ transducer.setDescription(description_contens)
 node.appendTransducer(transducer)
 ```
 
-ノードに情報を設定した後にcreateメソッドで作成する
+- ノードに情報を設定した後にcreateメソッドで作成する
 ``` python
 publisher.create(node)
 ```
 
 
 ## Publish
-パブリッシャはNodeオブジェクトにデータをセットした上で、publishメソッドを用いてデータを配信します
+- パブリッシャはNodeオブジェクトにデータをセットした上で、publishメソッドを用いてデータを配信します
 
 ``` python:publisher.py
 publisher = PublishModule(client)
@@ -66,17 +66,18 @@ transducer.setRawValue(value) # 値を設定する
 node.appendTransducer(transducer)
 ```
 
-publish時にはqosを`0`,`1`,`2`から設定可能
-デフォルト値は`0`
-QoSの値が大きくなるほど確実にサブスクライバにデータが送信されるような処理が加わります。
-優先度はPublisher QoS > Subscriber QoSです。
+- publish時にはqosを`0`,`1`,`2`から設定可能
+    - デフォルト値は`0`
+    - QoSの値が大きくなるほど確実にサブスクライバにデータが送信されるような処理が加わります。
+    - 優先度はPublisher QoS > Subscriber QoSです。(subscriberの方がQoSの設定値が低い場合、Publisher QoSに合わせてダウングレードするので注意)
+
 ``` python:publisher.py
 publisher.publish(node, qos=0)
 ```
 
 ## Subscribe
-サブスクライバはsubscribeメソッドでnode_nameを指定してサブスクライブ登録をする
-SubscribeModuleを継承したオリジナルクラスを定義し、setProcessOnMessageメソッドでデータ受信時の処理を定義する。
+- サブスクライバはsubscribeメソッドでnode_nameを指定してサブスクライブ登録をする
+- SubscribeModuleを継承したオリジナルクラスを定義し、setProcessOnMessageメソッドでデータ受信時の処理を定義する。
 
 ``` python:subscriber.py
 # サブスクライブした時の処理をOverrideする方法
@@ -90,8 +91,8 @@ class OriginalSubscribeModule(SubscribeModule):
         self.client.on_message = on_message
 ```
 
-subscribe時にはqosを`0`,`1`,`2`から設定可能
-デフォルト値は`0`
+- subscribe時にはqosを`0`,`1`,`2`から設定可能
+    - デフォルト値は`0`
 
 ``` python:subscriber.py
 subscriber = OriginalSubscribeModule(client) # 独自クラスを作った場合
@@ -100,7 +101,7 @@ subscriber.setProcessOnMessage()  # データ受信時の処理を設定
 subscriber.run()                  # サブスクライブ開始
 ```
 
-データは以下のようにjson形式のテキストで送られてきます。json.loads()してtransducer名をkeyにアクセスしてデータを処理してください。
+- データは以下のようにjson形式のテキストで送られてきます。json.loads()してtransducer名をkeyにアクセスしてデータを処理してください。
 ```
 {
     transducer1_name : {
