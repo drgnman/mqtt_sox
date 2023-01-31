@@ -58,8 +58,11 @@ transducer.setRawValue(value) # 値を設定する
 node.appendTransducer(transducer)
 ```
 
+publish時にはqosを`0`,`1`,`2`から設定可能
+デフォルト値は`0`
+
 ``` python:publisher.py
-publisher.publish(node)
+publisher.publish(node, qos=0)
 ```
 
 ## Subscribe
