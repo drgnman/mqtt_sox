@@ -1,4 +1,8 @@
 # mqtt_sox
+
+MQTTプロトコル上でSOXの時のようなセンサデータ配信を実現するためのライブラリです。
+共通して使うことで、データフォーマットが定まり連携がしやすくなると嬉しいです。
+
 git cloneして使ってください
 
 ```
@@ -90,6 +94,21 @@ subscriber.subscribe(node_name, qos=0)   # subscribeするノードを指定す�
 subscriber.setProcessOnMessage()  # データ受信時の処理を設定
 subscriber.run()                  # サブスクライブ開始
 ```
+
+データは以下のようにjson形式で送られてきます。transducer名をkeyにアクセスしてデータを処理してください。
+```
+{
+    transducer1_name : {
+        raw_value: value,
+        publish_timestamp: str(datetime)  
+    },
+   transducer2_name : {
+        raw_value: value,
+        publish_timestamp: str(datetime)  
+    }, ... 
+}
+```
+
 
 ## Node
 |要素名|説明|
