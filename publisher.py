@@ -5,7 +5,8 @@ client = connection.connect()
 
 publisher = PublishModule(client)
 node = Node("test_node")
-node.flushTransducers()
+node.flushTransducers()  # node.transducersの中身を空のdictに再セット
+                         # createメソッド後とかに使う
 
 transducer = node.Transducer("test_transducer1")
 transducer.setRawValue(10)
