@@ -7,6 +7,10 @@ pip install -r requirements.txt
 sox_mqtt.pyをimportすることでmqttのpublishとsubscribeを支援します。
 
 # MQTT Brokerの設定
+- 最低限必要なこと
+  - Retainを有効にします
+  - Retain Messageの保管場所をRAMではなく、discにします
+- 他のパラメータは用途に応じて調整してください
 
 ## Connection
 Connectionオブジェクトを用いて接続するブローカへの設定を行う
