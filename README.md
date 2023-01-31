@@ -132,5 +132,5 @@ subscriber.run()                  # サブスクライブ開始
 - データノード
 |要素名|説明|
 |----|----|
-|node_name|ノード名（宛先指定に使う）|
+|node_name|ノード名|
 |transducer|Transducer名: {rawValue: データ値, publish_timestamp: 配信日時} |
