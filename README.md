@@ -21,6 +21,8 @@ sox_mqtt.pyをimportすることでmqttのpublishとsubscribeを支援します�
 ## Connection
 Connectionオブジェクトを用いて接続するブローカへの設定を行う
 connectメソッドによって設定した接続情報の入力確認を行い、接続に成功するとmqtt_clientを戻り値で返す
+client_idが複数クライアントで重複すると重複している者同士でコネクションを奪い合ってしまい、変な挙動を起こします(EMQXで確認)
+引数で指定しなかった場合、内部的に20桁の英数字の文字列をランダムで生成して設定するようにしている(__randomIdGenerateメソッド参照)のでほぼ重複はないはずです。
 ```
 connection = Connection(broker_name, port, client_id=randomId, username=None, password=None)
 client = connection.connect()
