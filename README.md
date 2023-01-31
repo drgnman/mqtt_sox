@@ -117,8 +117,10 @@ subscriber.run()                  # サブスクライブ開始
 |location|位置情報(緯度,経度)の順で指定|
 |transducers|ノードが扱うtransducer群|
 |description|備考|
+|create_timestamp|作成日時|
 
 ## Transducer
+- メタノード
 |要素名|説明|
 |----|----|
 |transducer_name|Transducer名|
@@ -126,3 +128,9 @@ subscriber.run()                  # サブスクライブ開始
 |min_value|想定される最小値|
 |max_value|想定される最大値|
 |description|備考|
+
+- データノード
+|要素名|説明|
+|----|----|
+|node_name|ノード名（宛先指定に使う）|
+|transducer|Transducer名: {rawValue: データ値, publish_timestamp: 配信日時} |
