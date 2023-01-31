@@ -15,7 +15,6 @@ class Connection:
         self.__broker = broker
         self.__port = port
         self.__client_id = client_id
-        print(self.__client_id)
         self.__username = username
         self.__password = password
 
