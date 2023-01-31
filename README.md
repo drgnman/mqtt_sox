@@ -95,7 +95,7 @@ subscriber.setProcessOnMessage()  # データ受信時の処理を設定
 subscriber.run()                  # サブスクライブ開始
 ```
 
-データは以下のようにjson形式で送られてきます。transducer名をkeyにアクセスしてデータを処理してください。
+データは以下のようにjson形式のテキストで送られてきます。json.loads()してtransducer名をkeyにアクセスしてデータを処理してください。
 ```
 {
     transducer1_name : {
