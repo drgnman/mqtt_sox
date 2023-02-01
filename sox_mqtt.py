@@ -52,16 +52,15 @@ class PublishModule:
         self.__client = client
     
     def create(self, node):
-        copy_node = copy(node)
-        copy_node.setNodeName(f"{copy_node.getNodeName()}_meta")
+        meta_node_name = f"{node.getNodeName()}_meta"
         msg = json.dumps({
-            "node_name": copy_node.getNodeName(),
-            "location": copy_node.getLocation(),
-            "transducers": copy_node.getTransducers(),
-            "descrption": copy_node.getDescription(),
+            "node_name": meta_node_name,
+            "location": node.getLocation(),
+            "transducers": node.getTransducers(),
+            "descrption": node.getDescription(),
             "create_timestamp": f"{datetime.now()}"
         })
-        self.__publishExecution(copy_node.getNodeName(), msg, 2)
+        self.__publishExecution(meta_node_name, msg, 2)
 
     def publish(self, node, qos=0):
         self.__publishExecution(node.getNodeName(), json.dumps(node.getTransducers()), qos)
@@ -172,7 +171,7 @@ class Node:
             self.__description = description
         def setRawValue(self, raw_value):
             self.__raw_value = raw_value
-            self.__meta_flag = False
+            self.setMetaValue(False)
         
         def getTransducerName(self):
             return self.__transducer_name
