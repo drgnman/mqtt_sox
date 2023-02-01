@@ -127,7 +127,7 @@ class Node:
     def getNodeName(self):
         return self.__node_name
     def getLocation(self):
-        return (self.__longitude, self.__latitude)
+        return [self.__longitude, self.__latitude]
     def getTransducers(self):
         return self.__transducers
     def getDescription(self):
