@@ -11,12 +11,13 @@ class Connection:
         randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
         return ''.join(randlst)
 
-    def __init__(self, broker, port, client_id=__randomIdGenerate(20), username=None, password=None):
+    def __init__(self, broker, port, client_id=__randomIdGenerate(20), username=None, password=None, keepalive=60):
         self.__broker = broker
         self.__port = port
         self.__client_id = client_id
         self.__username = username
         self.__password = password
+        self.__keepalive = keepalive
 
     # connect処理によってmqtt_clientオブジェクトを生成
     def connect(self) -> mqtt_client:
@@ -41,7 +42,7 @@ class Connection:
             client.username_pw_set(self.__username, self.__password)
         
         client.on_connect = on_connect
-        client.connect(self.__broker, self.__port)
+        client.connect(self.__broker, port=self.__port, keepalive=self.__keepalive)
         return client
     def disconnect(self, client):
         client.disconnection()
