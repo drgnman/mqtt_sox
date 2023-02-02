@@ -171,7 +171,7 @@ class Node:
             self.__description = description
         def setRawValue(self, raw_value):
             self.__raw_value = raw_value
-            self.setMetaValue(False)
+            self.__meta_flag = False
         
         def getTransducerName(self):
             return self.__transducer_name
