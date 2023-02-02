@@ -11,7 +11,7 @@ class Connection:
         randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
         return ''.join(randlst)
 
-    def __init__(self, broker, port, client_id=__randomIdGenerate(20), username=None, password=None, keepalive=60):
+    def __init__(self, broker, port, keepalive=60, client_id=__randomIdGenerate(20), username=None, password=None):
         self.__broker = broker
         self.__port = port
         self.__client_id = client_id
