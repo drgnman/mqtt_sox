@@ -78,6 +78,13 @@ publisher.publish(node, qos=0)
 ## Subscribe
 - サブスクライバはsubscribeメソッドでnode_nameを指定してサブスクライブ登録をする
 - SubscribeModuleを継承したオリジナルクラスを定義し、setProcessOnMessageメソッドでデータ受信時の処理を定義する。
+- mqttにはワイルドカードとして`#`と`+`が用意されています。
+- `#`を使った場合、指定した階層以下のすべてのトピックを同時にサブスクライブできます。
+    - 例えば、`sensor/test1`, `sensor/test2`というトピックがあった時、`sensor/#`と指定することで、`sensor/`以下のすべてのトピックを同時にサブスクライブできます。
+- `+`は、指定した階層の直下分だけ、なんでも良いとします。
+    - 例えば、`sensor/test1/environment/`, `sensor/test2/environment`というのがあった時、`sensor/+/environment`とすることで、`sensor/自由なトピック名/environment`に一致するトピックからデータ取得します。
+- トピックグルーピングに活用してください。 (sox_mqttjsも対応)
+- *注意*: ワイルドカード演算子はサブスクライブにのみ使えます。
 
 ``` python:subscriber.py
 # サブスクライブした時の処理をOverrideする方法
