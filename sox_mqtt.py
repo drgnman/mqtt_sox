@@ -85,8 +85,9 @@ class SubscribeModule:
         self.client = client
     
     def subscribe(self, node_name, qos=0):
-        meta_node = f"{node_name}_meta"
-        self.client.subscribe(meta_node, 2)    # メタノードをサブスクライブ
+        if not ("#" in node_name or "+" in node_name): # 演算子が含まれていた場合、metaの検索はしない
+            meta_node = f"{node_name}_meta"
+            self.client.subscribe(meta_node, 2)    # メタノードをサブスクライブ
         self.client.subscribe(node_name, qos)  # データが流れてrくるノードをサブスクライブ
 
     ''' Dataを受信したときのコールバック処理を管理するメソッド 
